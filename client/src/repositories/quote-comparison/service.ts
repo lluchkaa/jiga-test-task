@@ -4,7 +4,7 @@ import { QuoteComparisonSchema, type QuoteComparison } from "./types"
 
 class _QuoteComparisonService {
   get = async (quoteId: string) =>
-    QuoteComparisonSchema.safeParse(
+    QuoteComparisonSchema.parse(
       (
         await api.get<QuoteComparison>(`/quote-comparison`, {
           params: { quoteId },
