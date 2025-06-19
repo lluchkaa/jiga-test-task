@@ -12,5 +12,10 @@ export const quoteComparisonController: RequestHandler = async (req, res) => {
 
   const quotesComparison = await getQuotesComparison(quoteId)
 
+  if (!quotesComparison) {
+    res.status(404).json({ error: "Quote not found" })
+    return
+  }
+
   res.json(quotesComparison)
 }

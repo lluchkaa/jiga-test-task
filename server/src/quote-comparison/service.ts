@@ -1,6 +1,6 @@
 import { Quote } from "~/lib/database/models"
 
-export function getQuotesComparison(quoteId: string) {
+export async function getQuotesComparison(quoteId: string) {
   const itemsAggregators = [
     {
       $lookup: {
@@ -88,7 +88,7 @@ export function getQuotesComparison(quoteId: string) {
     },
   ]
 
-  return Quote.aggregate([
+  const result = await Quote.aggregate<unknown>([
     { $match: { _id: quoteId } },
     { $unwind: { path: "$offers" } },
     { $unwind: { path: "$offers.items" } },
@@ -99,5 +99,11 @@ export function getQuotesComparison(quoteId: string) {
         suppliers: suppliersAggregators,
       },
     },
-  ])
+  ]).exec()
+
+  if (!result.length) {
+    return null
+  }
+
+  return result[0]
 }
