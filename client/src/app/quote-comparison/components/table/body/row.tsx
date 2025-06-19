@@ -4,7 +4,7 @@ import type {
   ItemOffer,
   QuoteComparison,
 } from "~/repositories/quote-comparison"
-import { formatMoney } from "~/utilities/money"
+import { createColorPicker, formatMoney } from "~/utilities/number"
 
 type Props = {
   offer: ItemOffer
@@ -18,15 +18,18 @@ export const QuoteComparisonTableRow: React.FC<Props> = (props) => {
 
   const quantity = Object.values(itemOffer.offers)[0]?.quantity
 
+  const colorPicker = createColorPicker(itemOffer.minPrice, itemOffer.maxPrice)
+
   const priceNodes = comparison.suppliers.map((supplier) => {
     const offer = itemOffer.offers[supplier.id]
 
     const price = offer?.unitPrice
+    const color = price ? colorPicker(price) : undefined
 
     return (
       <React.Fragment key={supplier.id}>
-        <td>{price ? formatMoney(price) : null}</td>
-        <td>{price ? formatMoney(price * offer.quantity) : null}</td>
+        <td style={{backgroundColor: color}}>{price ? formatMoney(price) : null}</td>
+        <td style={{backgroundColor: color}}>{price ? formatMoney(price * offer.quantity) : null}</td>
       </React.Fragment>
     )
   })

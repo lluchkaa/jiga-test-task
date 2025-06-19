@@ -14,6 +14,8 @@ export type Offer = z.infer<typeof OfferSchema>
 
 export const ItemOfferSchema = z.object({
   itemId: z.string(),
+  minPrice: z.number().nonnegative(),
+  maxPrice: z.number().nonnegative(),
   offers: z.record(z.string(), OfferSchema),
 })
 export type ItemOffer = z.infer<typeof ItemOfferSchema>

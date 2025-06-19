@@ -3,7 +3,7 @@ import { cn } from "~/utilities/styles"
 
 type Props = {
   label: React.ReactNode
-  data: React.ReactNode[]
+  data: { value: React.ReactNode; color: string }[]
 
   isBold?: boolean
 }
@@ -18,7 +18,9 @@ export const QuoteComparisonTableFooterRow: React.FC<Props> = (props) => {
       {data.map((cell, index) => (
         <React.Fragment key={index}>
           <td />
-          <td key={index}>{cell}</td>
+          <td key={index} style={{ backgroundColor: cell.color }}>
+            {cell.value}
+          </td>
         </React.Fragment>
       ))}
     </tr>

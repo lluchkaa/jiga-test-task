@@ -16,8 +16,10 @@ table {
     @apply border border-gray-200 p-2 leading-none;
   }
 
-  th {
-    @apply bg-gray-100 font-semibold;
+  thead {
+    th {
+      @apply bg-gray-100 text-start font-semibold;
+    }
   }
 
   tbody,

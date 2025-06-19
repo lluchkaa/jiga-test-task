@@ -16,7 +16,7 @@ export const QuoteComparisonTable: React.FC<Props> = (props) => {
 
   return (
     <div className="overflow-x-auto">
-      <table className={cn("whitespace-nowrap", className)}>
+      <table className={cn("w-full whitespace-nowrap", className)}>
         <QuoteComparisonTableHeader comparison={comparison} />
         <QuoteComparisonTableBody comparison={comparison} />
         <QuoteComparisonTableFooter comparison={comparison} />
