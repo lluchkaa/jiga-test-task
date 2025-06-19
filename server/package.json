@@ -12,6 +12,7 @@
   },
   "scripts": {
     "dev": "nodemon",
+    "start": "ts-node src/index.ts",
     "check": "prettier --check . && eslint . && tsc --noEmit",
     "check:fix": "prettier --write . && eslint --fix . && tsc --noEmit"
   },
