@@ -1,5 +1,16 @@
 import { RequestHandler } from "express"
 
-export const quoteComparisonController: RequestHandler = (_req, res) => {
-  res.json({ ok: true })
+import { getQuotesComparison } from "./service"
+
+export const quoteComparisonController: RequestHandler = async (req, res) => {
+  const quoteId = req.query.quoteId as string
+
+  if (!quoteId) {
+    res.status(400).json({ error: "Quote ID is required" })
+    return
+  }
+
+  const quotesComparison = await getQuotesComparison(quoteId)
+
+  res.json(quotesComparison)
 }
