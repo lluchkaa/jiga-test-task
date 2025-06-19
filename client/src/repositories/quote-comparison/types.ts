@@ -13,7 +13,7 @@ export const OfferSchema = z.object({
 export type Offer = z.infer<typeof OfferSchema>
 
 export const ItemOfferSchema = z.object({
-  id: z.string(),
+  itemId: z.string(),
   offers: z.record(z.string(), OfferSchema),
 })
 export type ItemOffer = z.infer<typeof ItemOfferSchema>

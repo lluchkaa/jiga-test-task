@@ -24,7 +24,7 @@ export const SupplierCell: React.FC<Props> = (props) => {
         </div>
         <span>⭐️ {supplier.rating}</span>
       </div>
-        {topPickNode}
+      {topPickNode}
     </th>
   )
 }
