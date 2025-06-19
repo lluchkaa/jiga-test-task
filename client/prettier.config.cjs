@@ -3,6 +3,7 @@ const config = {
   semi: false,
   singleQuote: false,
   plugins: [require.resolve("prettier-plugin-tailwindcss")],
+  tailwindFunctions: ["clsx", "cn", "tv"],
 }
 
 module.exports = config
