@@ -19,4 +19,11 @@ table {
   th {
     @apply bg-gray-100 font-semibold;
   }
+
+  tbody,
+  tfoot {
+    td {
+      @apply py-4;
+    }
+  }
 }
