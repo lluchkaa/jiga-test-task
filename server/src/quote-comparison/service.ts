@@ -15,7 +15,7 @@ export function getQuotesComparison(quoteId: string) {
     { $project: { _id: 0, id: "$_id", name: 1 } },
   ]
 
-  const offersAggregators = [
+  const itemOffersAggregators = [
     {
       $group: {
         _id: "$offers.items.itemId",
@@ -95,7 +95,7 @@ export function getQuotesComparison(quoteId: string) {
     {
       $facet: {
         items: itemsAggregators,
-        offers: offersAggregators,
+        itemOffers: itemOffersAggregators,
         suppliers: suppliersAggregators,
       },
     },
