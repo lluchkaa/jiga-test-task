@@ -8,7 +8,7 @@ export const Loader: React.FC<Props> = (props) => {
   const { className } = props
 
   return (
-    <div className={cn("flex content-center items-center", className)}>
+    <div className={cn("flex items-center justify-center", className)}>
       Loading...
     </div>
   )
