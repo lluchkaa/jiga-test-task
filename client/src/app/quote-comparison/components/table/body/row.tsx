@@ -28,8 +28,12 @@ export const QuoteComparisonTableRow: React.FC<Props> = (props) => {
 
     return (
       <React.Fragment key={supplier.id}>
-        <td style={{backgroundColor: color}}>{price ? formatMoney(price) : null}</td>
-        <td style={{backgroundColor: color}}>{price ? formatMoney(price * offer.quantity) : null}</td>
+        <td style={{ backgroundColor: color }}>
+          {price ? formatMoney(price) : null}
+        </td>
+        <td style={{ backgroundColor: color }}>
+          {price ? formatMoney(price * offer.quantity) : null}
+        </td>
       </React.Fragment>
     )
   })
