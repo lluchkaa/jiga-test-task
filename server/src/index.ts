@@ -1,6 +1,7 @@
 import { env } from "~/lib/env"
+import { connectToDatabase } from "~/lib/database"
+
 import { bootstrap } from "~/bootstrap"
-import { connectToDatabase } from "./lib/database"
 
 async function main() {
   await connectToDatabase()
