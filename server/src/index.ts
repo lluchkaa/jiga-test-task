@@ -12,8 +12,8 @@ async function main() {
       console.error("Error starting the server:", error)
       process.exit(1)
     }
-    console.log(`Server is running on port ${env.PORT}`)
+    console.log(`Server is running on port ${String(env.PORT)}`)
   })
 }
 
-main()
+main().catch(console.error)

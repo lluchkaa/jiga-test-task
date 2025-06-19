@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+/* eslint-disable @typescript-eslint/no-namespace */
 import { config as dotenvConfig } from "dotenv"
 import { z } from "zod"
 
