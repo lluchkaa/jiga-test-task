@@ -15,10 +15,12 @@ export const QuoteComparisonTable: React.FC<Props> = (props) => {
   const { comparison, className } = props
 
   return (
-    <table className={cn("w-auto", className)}>
-      <QuoteComparisonTableHeader comparison={comparison} />
-      <QuoteComparisonTableBody comparison={comparison} />
-      <QuoteComparisonTableFooter comparison={comparison} />
-    </table>
+    <div className="overflow-x-auto">
+      <table className={cn("whitespace-nowrap", className)}>
+        <QuoteComparisonTableHeader comparison={comparison} />
+        <QuoteComparisonTableBody comparison={comparison} />
+        <QuoteComparisonTableFooter comparison={comparison} />
+      </table>
+    </div>
   )
 }
