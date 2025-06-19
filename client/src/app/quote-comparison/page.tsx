@@ -21,7 +21,7 @@ export const QuoteComparisonPage: React.FC = () => {
     )
   }
 
-  if (!quoteComparison) {
+  if (!quoteComparison?.itemOffers.length) {
     return <ErrorAlert className="grow" message="Quote comparison not found." />
   }
 
