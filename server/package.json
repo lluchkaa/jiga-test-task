@@ -1,0 +1,22 @@
+{
+  "name": "jiga-test-task/server",
+  "version": "0.0.0",
+  "private": true,
+  "author": "lluchkaa",
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "packageManager": "pnpm@10.12.1",
+  "engines": {
+    "node": ">=22.0.0 <23.0.0",
+    "pnpm": ">=9.0.0 <11.0.0"
+  },
+  "scripts": {
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^24.0.3",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.8.3"
+  }
+}
