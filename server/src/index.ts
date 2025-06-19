@@ -1,7 +1,10 @@
 import { env } from "~/lib/env"
-import { bootstrap } from "~/lib/bootstrap"
+import { bootstrap } from "~/bootstrap"
+import { connectToDatabase } from "./lib/database"
 
-function main() {
+async function main() {
+  await connectToDatabase()
+
   const app = bootstrap()
 
   app.listen(env.PORT, (error) => {
