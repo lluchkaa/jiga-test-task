@@ -1,6 +1,10 @@
-import type { QuoteComparison } from "~/repositories/quote-comparison"
-import { SupplierCell } from "./supplier-cell"
 import React from "react"
+
+import {
+  QuoteComparisonHelpers,
+  type QuoteComparison,
+} from "~/repositories/quote-comparison"
+import { SupplierCell } from "./supplier-cell"
 
 type Props = {
   comparison: QuoteComparison
@@ -9,8 +13,16 @@ type Props = {
 export const QuoteComparisonTableHeader: React.FC<Props> = (props) => {
   const { comparison } = props
 
+  const topSupplier = QuoteComparisonHelpers.getTopSupplier(
+    comparison.suppliers,
+  )
+
   const supplierNodes = comparison.suppliers.map((supplier) => (
-    <SupplierCell key={supplier.id} supplier={supplier} />
+    <SupplierCell
+      key={supplier.id}
+      supplier={supplier}
+      isTop={topSupplier.id === supplier.id}
+    />
   ))
 
   const supplierSubGroups = comparison.suppliers.map((supplier) => (
