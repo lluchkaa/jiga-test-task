@@ -1,7 +1,8 @@
+import { PipelineStage } from "mongoose"
 import { Quote } from "~/lib/database/models"
 
 export async function getQuotesComparison(quoteId: string) {
-  const itemsAggregators = [
+  const itemsAggregators: PipelineStage.FacetPipelineStage[] = [
     {
       $lookup: {
         from: "items",
@@ -13,9 +14,10 @@ export async function getQuotesComparison(quoteId: string) {
     { $unwind: "$item" },
     { $group: { _id: "$item._id", name: { $first: "$item.name" } } },
     { $project: { _id: 0, id: "$_id", name: 1 } },
+    { $sort: { name: 1 } },
   ]
 
-  const itemOffersAggregators = [
+  const itemOffersAggregators: PipelineStage.FacetPipelineStage[] = [
     {
       $group: {
         _id: "$offers.items.itemId",
@@ -30,10 +32,17 @@ export async function getQuotesComparison(quoteId: string) {
         },
       },
     },
-    { $project: { _id: 0, id: "$_id", offers: { $arrayToObject: "$offers" } } },
+    {
+      $project: {
+        _id: 0,
+        itemId: "$_id",
+        offers: { $arrayToObject: "$offers" },
+      },
+    },
+    { $sort: { itemId: 1 } },
   ]
 
-  const suppliersAggregators = [
+  const suppliersAggregators: PipelineStage.FacetPipelineStage[] = [
     {
       $lookup: {
         from: "suppliers",
@@ -86,9 +95,24 @@ export async function getQuotesComparison(quoteId: string) {
         score: 1,
       },
     },
+    { $sort: { name: 1 } },
   ]
 
-  const result = await Quote.aggregate<unknown>([
+  const metaAggregators: PipelineStage.FacetPipelineStage[] = [
+    {
+      $group: {
+        _id: null,
+        minPrice: { $min: "$offers.items.unitPrice" },
+        maxPrice: { $max: "$offers.items.unitPrice" },
+      },
+    },
+    { $project: { _id: 0, minPrice: 1, maxPrice: 1 } },
+  ]
+
+  const result = await Quote.aggregate<{
+    [key: string]: unknown
+    meta: unknown[]
+  }>([
     { $match: { _id: quoteId } },
     { $unwind: { path: "$offers" } },
     { $unwind: { path: "$offers.items" } },
@@ -97,6 +121,7 @@ export async function getQuotesComparison(quoteId: string) {
         items: itemsAggregators,
         itemOffers: itemOffersAggregators,
         suppliers: suppliersAggregators,
+        meta: metaAggregators,
       },
     },
   ]).exec()
@@ -105,5 +130,8 @@ export async function getQuotesComparison(quoteId: string) {
     return null
   }
 
-  return result[0]
+  return {
+    ...result[0],
+    meta: result[0].meta[0],
+  }
 }
