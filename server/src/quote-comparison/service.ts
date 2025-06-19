@@ -21,6 +21,8 @@ export async function getQuotesComparison(quoteId: string) {
     {
       $group: {
         _id: "$offers.items.itemId",
+        minPrice: { $min: "$offers.items.unitPrice" },
+        maxPrice: { $max: "$offers.items.unitPrice" },
         offers: {
           $push: {
             k: "$offers.supplierId",
@@ -36,6 +38,8 @@ export async function getQuotesComparison(quoteId: string) {
       $project: {
         _id: 0,
         itemId: "$_id",
+        minPrice: 1,
+        maxPrice: 1,
         offers: { $arrayToObject: "$offers" },
       },
     },
@@ -98,21 +102,7 @@ export async function getQuotesComparison(quoteId: string) {
     { $sort: { name: 1 } },
   ]
 
-  const metaAggregators: PipelineStage.FacetPipelineStage[] = [
-    {
-      $group: {
-        _id: null,
-        minPrice: { $min: "$offers.items.unitPrice" },
-        maxPrice: { $max: "$offers.items.unitPrice" },
-      },
-    },
-    { $project: { _id: 0, minPrice: 1, maxPrice: 1 } },
-  ]
-
-  const result = await Quote.aggregate<{
-    [key: string]: unknown
-    meta: unknown[]
-  }>([
+  const result = await Quote.aggregate<unknown>([
     { $match: { _id: quoteId } },
     { $unwind: { path: "$offers" } },
     { $unwind: { path: "$offers.items" } },
@@ -121,7 +111,6 @@ export async function getQuotesComparison(quoteId: string) {
         items: itemsAggregators,
         itemOffers: itemOffersAggregators,
         suppliers: suppliersAggregators,
-        meta: metaAggregators,
       },
     },
   ]).exec()
@@ -130,8 +119,5 @@ export async function getQuotesComparison(quoteId: string) {
     return null
   }
 
-  return {
-    ...result[0],
-    meta: result[0].meta[0],
-  }
+  return result[0]
 }
