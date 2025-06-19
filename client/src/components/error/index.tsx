@@ -1,4 +1,4 @@
-import { cn } from "~/services/styles"
+import { cn } from "~/utilities/styles"
 
 type Props = {
   message?: string
