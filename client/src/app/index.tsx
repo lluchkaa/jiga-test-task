@@ -1,10 +1,5 @@
-import { useEffect } from "react"
-import { QuoteComparisonService } from "~/repositories/quote-comparison"
+import { QuoteComparisonPage } from "./quote-comparison/page"
 
 export const App: React.FC = () => {
-  useEffect(() => {
-    QuoteComparisonService.get("q1").then(console.log).catch(console.error)
-  })
-
-  return null
+  return <QuoteComparisonPage />
 }
