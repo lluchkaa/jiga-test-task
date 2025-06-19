@@ -3,6 +3,20 @@
 html,
 body,
 #root {
-  @apply flex flex-col items-stretch;
+  @apply flex grow flex-col items-stretch;
   min-height: 100dvh;
+}
+
+/* general table styles */
+table {
+  @apply border-collapse;
+
+  th,
+  td {
+    @apply border border-gray-200 p-2 leading-none;
+  }
+
+  th {
+    @apply bg-gray-100 font-semibold;
+  }
 }
