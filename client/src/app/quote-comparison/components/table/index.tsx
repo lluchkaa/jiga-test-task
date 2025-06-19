@@ -3,6 +3,7 @@ import { cn } from "~/utilities/styles"
 
 import { QuoteComparisonTableHeader } from "./header"
 import { QuoteComparisonTableBody } from "./body"
+import { QuoteComparisonTableFooter } from "./footer"
 
 type Props = {
   comparison: QuoteComparison
@@ -17,6 +18,7 @@ export const QuoteComparisonTable: React.FC<Props> = (props) => {
     <table className={cn("w-auto", className)}>
       <QuoteComparisonTableHeader comparison={comparison} />
       <QuoteComparisonTableBody comparison={comparison} />
+      <QuoteComparisonTableFooter comparison={comparison} />
     </table>
   )
 }
