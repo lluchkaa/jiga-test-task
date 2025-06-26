@@ -1,7 +1,12 @@
 import { PipelineStage } from "mongoose"
 import { Quote } from "~/lib/database/models"
 
-export async function getQuotesComparison(quoteId: string) {
+export async function getQuotesComparison(
+  quoteId: string,
+  removedItemIds: string[],
+) {
+  console.log("RemovedItems:", removedItemIds)
+
   const itemsAggregators: PipelineStage.FacetPipelineStage[] = [
     {
       $lookup: {
@@ -73,15 +78,35 @@ export async function getQuotesComparison(quoteId: string) {
         rating: { $first: "$rating.rating" },
         shippingPrice: { $first: "$offers.shippingPrice" },
         leadTime: { $first: "$offers.leadTime" },
-        totalPrice: { $first: "$offers.totalPrice" },
+        totalPrice: {
+          $sum: {
+            $add: [
+              {
+                $multiply: [
+                  "$offers.items.unitPrice",
+                  "$offers.items.quantity",
+                ],
+              },
+            ],
+          },
+        },
         score: {
           $sum: {
             $add: [
-              { $divide: ["$offers.items.unitPrice", 1000] },
-              { $divide: ["$offers.shippingPrice", 100] },
-              { $divide: ["$offers.leadTime", 30] },
+              { $divide: ["$offers.items.unitPrice", 1] },
+              // { $divide: ["$offers.shippingPrice", 1] },
+              { $divide: ["$offers.leadTime", 1] },
               { $subtract: [1, { $divide: ["$rating.rating", 5] }] },
             ],
+          },
+        },
+      },
+    },
+    {
+      $addFields: {
+        totalPrice: {
+          $sum: {
+            $add: ["$totalPrice", "$shippingPrice"],
           },
         },
       },
@@ -106,6 +131,7 @@ export async function getQuotesComparison(quoteId: string) {
     { $match: { _id: quoteId } },
     { $unwind: { path: "$offers" } },
     { $unwind: { path: "$offers.items" } },
+    { $match: { "offers.items.itemId": { $nin: removedItemIds } } },
     {
       $facet: {
         items: itemsAggregators,

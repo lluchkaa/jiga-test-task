@@ -1,15 +1,24 @@
 import { ErrorAlert, Loader } from "~/components"
 import { useQuoteComparison } from "~/repositories/quote-comparison/hooks"
 import { QuoteComparisonHeader, QuoteComparisonTable } from "./components"
+import { useState } from "react"
 
 export const QuoteComparisonPage: React.FC = () => {
   const params = new URLSearchParams(window.location.search)
+
+  const [removedItemIds, setRemovedItemIds] = useState<string[]>([])
 
   const {
     data: quoteComparison,
     isLoading: isQuoteComparisonLoading,
     error: quoteComparisonError,
-  } = useQuoteComparison(params.get("quoteId") ?? "")
+  } = useQuoteComparison(params.get("quoteId") ?? "", removedItemIds)
+
+  const removeItem = (itemId: string) => {
+    setRemovedItemIds((prev) => [...new Set([...prev, itemId])])
+  }
+
+  console.log("RemovedItems:", removedItemIds)
 
   if (isQuoteComparisonLoading) {
     return <Loader className="grow" />
@@ -30,7 +39,10 @@ export const QuoteComparisonPage: React.FC = () => {
       <QuoteComparisonHeader
         suppliersCount={quoteComparison.suppliers.length}
       />
-      <QuoteComparisonTable comparison={quoteComparison} />
+      <QuoteComparisonTable
+        comparison={quoteComparison}
+        removeItem={removeItem}
+      />
     </div>
   )
 }
